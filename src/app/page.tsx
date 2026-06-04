@@ -1,65 +1,107 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
+import { getTransactions, type Transaction } from "@/lib/storage";
+import { IndianRupee, TrendingUp, PiggyBank, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
+
+export default function Dashboard() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setTransactions(getTransactions());
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const totalServiceFees = transactions.reduce((acc, curr) => acc + curr.serviceFee, 0);
+  const totalSavings = transactions.reduce((acc, curr) => acc + curr.savings, 0);
+  const totalReceived = transactions.reduce((acc, curr) => acc + curr.fundsReceived, 0);
+  const totalPaid = transactions.reduce((acc, curr) => acc + curr.fundsPaid, 0);
+  const netProfit = transactions.reduce((acc, curr) => acc + curr.netProfit, 0);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Overview Dashboard</h1>
+        <p className="text-muted-foreground mt-2">A real-time snapshot of your business health.</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-t-4 border-t-primary">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Net Profit</CardTitle>
+            <TrendingUp className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground">₹{netProfit.toLocaleString("en-IN")}</div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Service Fees</CardTitle>
+            <IndianRupee className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">₹{totalServiceFees.toLocaleString("en-IN")}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Savings</CardTitle>
+            <PiggyBank className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">₹{totalSavings.toLocaleString("en-IN")}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Funds Flow</CardTitle>
+            <ArrowDownToLine className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground flex items-center"><ArrowDownToLine className="mr-1 h-3 w-3 text-green-600"/> In</span>
+              <span className="font-bold">₹{totalReceived.toLocaleString("en-IN")}</span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground flex items-center"><ArrowUpFromLine className="mr-1 h-3 w-3 text-red-600"/> Out</span>
+              <span className="font-bold">₹{totalPaid.toLocaleString("en-IN")}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {transactions.length === 0 ? (
+            <div className="text-sm text-muted-foreground text-center py-6">No transactions yet.</div>
+          ) : (
+            <div className="space-y-4">
+              {transactions.slice(0, 5).map((tx) => (
+                <div key={tx.id} className="flex items-center justify-between border-b border-border pb-4 last:border-0 last:pb-0">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">{tx.godown}</p>
+                    <p className="text-sm text-muted-foreground">{tx.date}</p>
+                  </div>
+                  <div className="font-medium text-primary">
+                    +₹{tx.netProfit.toLocaleString("en-IN")}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
