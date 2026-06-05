@@ -25,6 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const auth = sessionStorage.getItem("smart_ledger_auth");
@@ -201,12 +202,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#E0E1DD]">
       {/* 1. Header & Utility bar */}
-      <Header />
+      <Header onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
 
       {/* 2. Main Workspace */}
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Keyboard Shortcut Panel */}
-        <RightSidebar />
+        <RightSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Center Dashboard Workspace (Left status card and left sidebar removed completely) */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">

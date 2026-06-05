@@ -44,53 +44,94 @@ const menuItems: MenuGroup[] = [
   */
 ];
 
-export function RightSidebar() {
+interface RightSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function RightSidebar({ isOpen, onClose }: RightSidebarProps) {
   const pathname = usePathname();
 
-  return (
-    <div className="w-full md:w-64 shrink-0 bg-[#f3f4f2] border-r border-[#1B263B] flex flex-col select-none">
-      {/* Menu Items */}
-      <div className="p-4 space-y-4 font-mono text-[12px] text-[#000000] flex-1 overflow-y-auto">
-        {menuItems.map((group) => (
-          <div key={group.category} className="space-y-1.5">
-            <span className="text-[#cc0000] font-bold block border-b border-[#E0E1DD] pb-1 mb-1.5 text-[10px] uppercase tracking-wider">
-              {group.category}
-            </span>
-            
-            <div className="space-y-1">
-              {group.items.map((item) => {
-                const isActive = pathname === item.href;
+  // Close the sidebar when navigating on mobile
+  React.useEffect(() => {
+    onClose();
+  }, [pathname]);
 
-                if (item.action) {
+  return (
+    <>
+      {/* Mobile backdrop overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300 ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
+
+      {/* Sidebar container */}
+      <div className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-[#f3f4f2] border-r border-[#1B263B] flex flex-col select-none
+        transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      `}>
+        {/* Mobile Close Button */}
+        <div className="md:hidden flex justify-between items-center p-3 border-b border-[#1B263B]/20 bg-[#E0E1DD]/30">
+          <span className="font-mono text-xs font-bold text-[#cc0000] uppercase tracking-wider">Navigation</span>
+          <button 
+            onClick={onClose}
+            className="w-6 h-6 border border-[#1B263B] bg-white text-[#0D1B2A] flex items-center justify-center font-bold text-xs hover:bg-[#cc0000] hover:text-white cursor-pointer active:translate-y-0.5"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Menu Items */}
+        <div className="p-4 space-y-4 font-mono text-[12px] text-[#000000] flex-1 overflow-y-auto">
+          {menuItems.map((group) => (
+            <div key={group.category} className="space-y-1.5">
+              <span className="text-[#cc0000] font-bold block border-b border-[#E0E1DD] pb-1 mb-1.5 text-[10px] uppercase tracking-wider">
+                {group.category}
+              </span>
+              
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive = pathname === item.href;
+
+                  if (item.action) {
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          item.action?.();
+                          onClose();
+                        }}
+                        className="w-full text-left px-2.5 py-1 block hover:bg-[#1B263B] hover:text-white transition-colors cursor-pointer rounded"
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  }
+
                   return (
-                    <button
+                    <Link
                       key={item.name}
-                      onClick={item.action}
-                      className="w-full text-left px-2.5 py-1 block hover:bg-[#1B263B] hover:text-white transition-colors cursor-pointer rounded"
+                      href={item.href}
+                      onClick={onClose}
+                      className={`w-full px-2.5 py-1 block transition-colors rounded ${
+                        isActive
+                          ? "bg-[#1B263B] text-white font-bold"
+                          : "hover:bg-[#1B263B] hover:text-white"
+                      }`}
                     >
                       {item.label}
-                    </button>
+                    </Link>
                   );
-                }
-
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`w-full px-2.5 py-1 block transition-colors rounded ${
-                      isActive
-                        ? "bg-[#1B263B] text-white font-bold"
-                        : "hover:bg-[#1B263B] hover:text-white"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
