@@ -1,0 +1,184 @@
+/* src/app/design.css */
+
+:root {
+  /* Blue/Grey/Alabaster Color Palette */
+  --tally-dark-green: #0D1B2A;   /* Ink Black */
+  --tally-header-green: #1B263B; /* Prussian Blue */
+  --tally-menu-green: #415A77;   /* Dusk Blue */
+  --tally-menu-hover: #778DA9;   /* Lavender Grey */
+  --tally-panel-tan: #E0E1DD;    /* Alabaster Grey */
+  --tally-mint: #f3f4f2;         /* Muted light grey for panels and tables */
+  --tally-mint-hover: #E0E1DD;   /* Alabaster hover */
+  --tally-sidebar-bg: #1B263B;   /* Prussian Blue */
+  --tally-sidebar-btn: #415A77;  /* Dusk Blue */
+  --tally-sidebar-btn-hover: #778DA9; /* Lavender Grey */
+  --tally-border-color: #1B263B; /* Prussian Blue */
+  --tally-hotkey-red: #cc0000;    /* Muted red accent */
+  --tally-accent-blue: #778DA9;
+  --tally-table-header: #0D1B2A; /* Ink Black */
+  
+  /* Standard Variables */
+  --color-primary: var(--tally-header-green);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--tally-menu-green);
+  --color-secondary-foreground: #ffffff;
+  --color-background: var(--tally-panel-tan);
+  --color-surface: var(--tally-mint);
+  --color-muted: #cccfc9;
+  --color-border: var(--tally-border-color);
+  --color-input: #ffffff;
+  --radius: 6px; /* slightly rounder corners */
+}
+
+/* Base Styles */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--tally-panel-tan);
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+/* Double border for retro look */
+.tally-double-border {
+  border: 3px double var(--tally-border-color);
+}
+
+.tally-single-border {
+  border: 1px solid var(--tally-border-color);
+}
+
+/* Tally top menu item */
+.tally-menu-item {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-right: 1px solid var(--tally-border-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.tally-menu-item:hover {
+  background-color: var(--tally-menu-hover);
+}
+
+/* Hotkey coloring */
+.hotkey {
+  color: var(--tally-hotkey-red);
+  font-weight: 900;
+  text-decoration: underline;
+}
+
+/* Main Cards */
+.card {
+  background: var(--tally-mint);
+  border: 1px solid var(--tally-border-color);
+  border-radius: var(--radius);
+  box-shadow: none;
+  padding: 0.75rem;
+}
+.card-header {
+  background: var(--tally-dark-green);
+  color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  margin: -0.75rem -0.75rem 0.75rem -0.75rem;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+.card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+.card-content {
+  font-size: 0.85rem;
+}
+
+/* Tally Table Style */
+.tally-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.tally-table th {
+  background-color: var(--tally-dark-green);
+  color: #ffffff;
+  font-weight: bold;
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--tally-border-color);
+}
+.tally-table td {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--tally-border-color);
+  background-color: var(--tally-mint);
+}
+.tally-table tr:hover td {
+  background-color: var(--tally-mint-hover);
+}
+
+/* Total row */
+.tally-total-row td {
+  border-top: 1px solid var(--tally-border-color);
+  border-bottom: 3px double var(--tally-border-color);
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+  background-color: var(--tally-sidebar-btn);
+  color: #ffffff;
+  border: none !important;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background-color 0.1s;
+}
+.btn:hover {
+  background-color: var(--tally-sidebar-btn-hover);
+}
+.btn-outline {
+  background-color: transparent;
+  color: var(--tally-dark-green);
+  border: none !important;
+}
+.btn-outline:hover {
+  background-color: rgba(13, 27, 42, 0.1);
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  border: none !important;
+  border-radius: var(--radius);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+.input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Responsive grid layout */
+.tally-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  height: calc(100vh - 120px);
+}
+@media (max-width: 768px) {
+  .tally-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
