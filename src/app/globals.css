@@ -46,8 +46,12 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-  --font-sans: var(--font-outfit), var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-montserrat), sans-serif;
+  --font-mono: var(--font-montserrat), sans-serif;
+}
+
+html {
+  font-size: 108%;
 }
 
 body {
@@ -65,4 +69,54 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* Override compiled Tailwind arbitrary pixel sizes to scale them up */
+.text-\[7px\] { font-size: 9px !important; }
+.text-\[8px\] { font-size: 10px !important; }
+.text-\[9px\] { font-size: 11px !important; }
+.text-\[10px\] { font-size: 12px !important; }
+.text-\[11px\] { font-size: 13px !important; }
+.text-\[12px\] { font-size: 14px !important; }
+
+/* Reset outlines, borders, and add slightly rounder corners for buttons and inputs */
+button, select, input, textarea, .btn, .input {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus, button:focus-visible, button:active, button:focus-within,
+select:focus, select:focus-visible, select:active, select:focus-within,
+input:focus, input:focus-visible, input:active, input:focus-within,
+textarea:focus, textarea:focus-visible, textarea:active, textarea:focus-within,
+.btn:focus, .btn:focus-visible, .btn:active, .btn:focus-within,
+.input:focus, .input:focus-visible, .input:active, .input:focus-within {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: none !important;
+  --tw-ring-offset-shadow: none !important;
+  --tw-ring-offset-width: 0px !important;
+}
+button, .btn {
+  border-radius: 6px !important;
+}
+input, select, textarea, .input {
+  border-radius: 6px !important;
+}
+
+/* Calculator widget overrides: enforce straight (sharp) solid outline borders */
+.calculator-widget {
+  border: 2px solid #1B263B !important;
+  border-radius: 0px !important;
+}
+.calculator-widget button {
+  border: 1px solid #1B263B !important;
+  border-radius: 0px !important;
 }

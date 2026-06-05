@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/Sidebar";
+import "./design.css";
+import "./fonts.css";
+import { AppShell } from "../components/AppShell";
 
-const outfit = Outfit({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -19,15 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} h-full antialiased`}>
+    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
       <body className="flex h-full bg-background overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-muted/20">
-          <div className="mx-auto max-w-7xl p-8">
-            {children}
-          </div>
-        </main>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
 }
+
